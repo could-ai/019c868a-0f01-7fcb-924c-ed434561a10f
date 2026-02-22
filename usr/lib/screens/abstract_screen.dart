@@ -10,13 +10,23 @@ class AbstractScreen extends StatefulWidget {
 class _AbstractScreenState extends State<AbstractScreen> {
   final TextEditingController _controller = TextEditingController();
 
-  final String _guide = '''
-Guía para el Resumen:
-1. Objetivo: ¿Qué se buscaba estudiar? (Relación entre periodo y longitud/masa).
-2. Metodología: Breve descripción de cómo se midieron los datos (sensores, cronómetro, varillas).
-3. Resultados Principales: Valor experimental de la gravedad obtenido, errores porcentuales.
-4. Conclusión: ¿Se cumplió la teoría?
+  final String _template = '''
+RESUMEN
+
+En esta práctica de laboratorio se estudió el comportamiento físico del péndulo simple y el péndulo compuesto, con el objetivo de determinar experimentalmente la aceleración de la gravedad local y el radio de giro de un cuerpo rígido.
+
+Para el péndulo simple, se midió el periodo de oscilación para diferentes longitudes de cuerda. Mediante un análisis gráfico de la relación lineal entre el cuadrado del periodo (T²) y la longitud (L), se obtuvo una pendiente experimental que permitió calcular la gravedad. El valor obtenido fue de g = [INSERTAR VALOR] m/s², lo cual representa un error porcentual del [INSERTAR ERROR]% respecto al valor teórico de 9.78 m/s².
+
+En el caso del péndulo compuesto, se registraron los periodos de oscilación variando la distancia del eje de rotación al centro de masa. Se aplicó el teorema de los ejes paralelos y se realizó una linealización de la ecuación del movimiento (graficando T²d vs d²). A partir de la pendiente y el intercepto de la recta de ajuste, se determinó nuevamente la gravedad experimental y el radio de giro (k) del objeto, obteniendo valores de g = [INSERTAR VALOR] m/s² y k = [INSERTAR VALOR] m.
+
+Los resultados confirman la validez de los modelos teóricos para pequeñas oscilaciones y demuestran la dependencia del periodo con la distribución de masa en el péndulo físico.
 ''';
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = _template;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +36,14 @@ Guía para el Resumen:
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.blue.shade200),
-              ),
-              child: Text(_guide),
+            const Text(
+              'Plantilla Generada Automáticamente',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Completa los valores entre corchetes [ ] con los datos obtenidos en las secciones de análisis.',
+              style: TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -42,11 +52,23 @@ Guía para el Resumen:
                 maxLines: null,
                 expands: true,
                 decoration: const InputDecoration(
-                  hintText: 'Escribe tu resumen aquí...',
                   border: OutlineInputBorder(),
                   filled: true,
+                  fillColor: Colors.white,
                 ),
+                style: const TextStyle(fontSize: 16, height: 1.5),
               ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () {
+                // Acción para copiar o guardar (simulada)
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Resumen listo para copiar')),
+                );
+              },
+              icon: const Icon(Icons.copy),
+              label: const Text('Copiar al Portapapeles'),
             ),
           ],
         ),
